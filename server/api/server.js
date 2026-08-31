@@ -79,7 +79,6 @@ const sitemapsRouter = require('./routes/sitemaps');
 const transparentRouter = require('./routes/transparent');
 const valuationRouter = require('./routes/valuation');
 const pulseRouter = require('./routes/pulse');
-const signalsRouter = require('../signals/api');
 
 // Import privacy linkage functions
 const {
@@ -425,8 +424,6 @@ app.use(transparentRouter);
 app.use(valuationRouter);
 app.use(pulseRouter);
 
-// Private trading signals: /api/signals/* (service-key protected)
-app.use('/api/signals', signalsRouter);
 
 // Count registered API routes (available as app.locals.apiRouteCount)
 function countApiRoutes(app) {

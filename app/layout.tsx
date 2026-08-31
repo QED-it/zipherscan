@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { NavBar } from "@/components/NavBar";
 import { StatsBar } from "@/components/StatsBar";
 import { Footer } from "@/components/Footer";
@@ -170,7 +169,6 @@ export default function RootLayout({
         <ThemeProvider>
           <AppContent>{children}</AppContent>
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );

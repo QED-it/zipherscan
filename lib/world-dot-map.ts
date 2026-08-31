@@ -15,7 +15,7 @@ export interface DotPosition {
   y: number;
 }
 
-export const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json';
+export const WORLD_TOPO_URL = '/land-110m.json';
 export const MAP_WIDTH = 960;
 export const MAP_HEIGHT = 500;
 export const DOT_SPACING = 2.5;
