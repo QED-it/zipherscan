@@ -12,7 +12,6 @@ const rateLimit = require('express-rate-limit');
 const { Pool } = require('pg');
 const WebSocket = require('ws');
 const http = require('http');
-const redis = require('redis');
 const fs = require('fs');
 const { createListCache } = require('./list-cache');
 const { createRequestObservability } = require('./request-observability');
@@ -140,37 +139,22 @@ pool.query('SELECT NOW()', (err, res) => {
 // REDIS CLIENT
 // ============================================================================
 
-// Create Redis client
-const redisClient = redis.createClient({
-  socket: {
-    host: process.env.REDIS_HOST || '127.0.0.1',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-  },
-  // No password for local Redis
-});
-const listCache = createListCache({ redisClient });
+// No Redis in this deployment. Every call site below already guards on
+// `isOpen` and falls back — the list cache to in-process memory, the WebSocket
+// rate limiter to `checkWebSocketRateLimitFallback` (which fails closed), and
+// the broadcast to local clients only, since the Pub/Sub fan-out existed for
+// multi-instance deployments and there is one instance. A permanently-closed
+// stub keeps those paths without threading null checks through the file.
+const redisClient = {
+  isOpen: false,
+  isReady: false,
+  on() {},
+  duplicate() { return this; },
+};
+const listCache = createListCache({ redisClient: null });
+const redisPub = redisClient;
+const redisSub = redisClient;
 
-// Create Redis Pub/Sub clients (separate connections required)
-const redisPub = redisClient.duplicate();
-const redisSub = redisClient.duplicate();
-
-// Connect to Redis
-(async () => {
-  try {
-    await redisClient.connect();
-    await redisPub.connect();
-    await redisSub.connect();
-    console.log('✅ Redis connected');
-  } catch (err) {
-    logSafeError('❌ Redis connection failed:', err);
-    console.warn('⚠️  Continuing without Redis (fallback to in-memory cache)');
-  }
-})();
-
-// Handle Redis errors
-redisClient.on('error', (err) => logSafeError('Redis Client Error:', err));
-redisPub.on('error', (err) => logSafeError('Redis Pub Error:', err));
-redisSub.on('error', (err) => logSafeError('Redis Sub Error:', err));
 
 // Identifies this process's broadcasts on the shared Redis channel so its
 // own publishes are never re-delivered to its own WebSocket clients (see
