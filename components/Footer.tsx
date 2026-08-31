@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { DonateButton } from '@/components/DonateButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
 import { isMainnet, isCrosslink, MAINNET_URL, TESTNET_URL, NETWORK_LABEL } from '@/lib/config';
@@ -66,10 +65,7 @@ export function Footer() {
               <Link href="/newsletter" className="footer-link text-[11px] font-mono">Newsletter</Link>
               <Link href="/about" className="footer-link text-[11px] font-mono">About</Link>
               <Link href="/press" className="footer-link text-[11px] font-mono">Press &amp; Brand</Link>
-              <DonateButton variant="link" />
-              <a href="https://twitter.com/cipherscan_app" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">X / Twitter</a>
-              <a href="https://github.com/Kenbak/cipherscan" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">GitHub</a>
-              <a href="https://www.youtube.com/@AtmosphereLabsDev" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">YouTube</a>
+              <a href="https://github.com/QED-it/cipherscan" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">GitHub</a>
             </div>
           </div>
         </div>

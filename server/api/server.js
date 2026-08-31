@@ -69,7 +69,6 @@ const sitemapsRouter = require('./routes/sitemaps');
 const transparentRouter = require('./routes/transparent');
 const valuationRouter = require('./routes/valuation');
 const pulseRouter = require('./routes/pulse');
-const signalsRouter = require('../signals/api');
 
 // Import privacy linkage functions
 const {
@@ -452,8 +451,6 @@ app.use(transparentRouter);
 app.use(valuationRouter);
 app.use(pulseRouter);
 
-// Private trading signals: /api/signals/* (service-key protected)
-app.use('/api/signals', signalsRouter);
 
 // Stable public API contract. The router is fail-closed by default and returns
 // an indistinguishable 404 until API_V1_ENABLED is explicitly configured.

@@ -28,7 +28,7 @@ import {
   pearson,
 } from './solar';
 
-const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json';
+const WORLD_TOPO_URL = '/land-110m.json';
 const DOT_SPACING = 3;
 const DOT_RADIUS = 1.5;
 

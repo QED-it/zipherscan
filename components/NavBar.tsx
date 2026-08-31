@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { SearchBar } from '@/components/SearchBar';
-import { DonateButton } from '@/components/DonateButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
 import { NETWORK_LABEL, NETWORK_COLOR, isMainnet, isCrosslink, MAINNET_URL, TESTNET_URL, CROSSLINK_URL } from '@/lib/config';
@@ -282,7 +281,6 @@ export function NavBar() {
               {/* Theme + Donate — desktop only */}
               <div className="hidden md:flex items-center gap-1">
                 <ThemeToggle />
-                <DonateButton compact />
               </div>
 
               {/* Mobile: hamburger */}
@@ -419,10 +417,9 @@ export function NavBar() {
                     </a>
                   </div>
 
-                  {/* Theme + Donate */}
+                  {/* Theme */}
                   <div className="flex items-center justify-end gap-2">
-                    <DonateButton compact />
-                    <ThemeToggle />
+                        <ThemeToggle />
                   </div>
                 </div>
               </div>
