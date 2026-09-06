@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
 #
 # Upstream's server/api/Dockerfile builds with context ./server/api, but the API
-# requires siblings outside it — ../../lib/peer-client, ../signals/api — so the
-# container exits with MODULE_NOT_FOUND on start. Build from ./server and keep
-# the whole tree, with the app at /app/api.
+# requires siblings outside it (../../lib/peer-client), so the container exits
+# with MODULE_NOT_FOUND on start. Build from ./server and keep the whole tree,
+# with the app at /app/api.
 #
 # node_modules is installed at /app, not /app/api: those siblings require
 # packages from api/package.json, and Node only walks *up* from the requiring
