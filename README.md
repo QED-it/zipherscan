@@ -1,3 +1,21 @@
+# Zipherscan
+
+A block explorer for [Zebra](https://github.com/QED-it/zebra) with ZSA (Zcash Shielded Assets, NU7 / v6 transactions), maintained by [QED-it](https://qed-it.com). It is a fork of [CipherScan](https://github.com/Kenbak/cipherscan); the upstream README follows below.
+
+**What differs from upstream**
+
+- Targets QED-it's ZSA1_1 testnet node (`https://rpc.test-zsa.org`) rather than the public Zcash networks. See [docs/run-locally.md](docs/run-locally.md) for running it and for connecting to that node or your own ZSA zebrad.
+- Upstream analytics, donation UI, Telegram signals and third-party CDN calls are removed. Redis is optional.
+- Deployment is Docker Compose; `docker-compose.qedit.yml` overlays the upstream stack to use the remote node.
+
+**Branches**: `zsa1` is the main line and tracks upstream `main`. Open PRs against it.
+
+**Docs**: [docs/run-locally.md](docs/run-locally.md), [DEPLOYMENT.md](DEPLOYMENT.md) (upstream operations guide).
+
+---
+
+*Everything below is the upstream CipherScan README, kept as is.*
+
 <p align="center">
   <img src="public/logo.png" alt="CipherScan Logo" width="120" />
 </p>
