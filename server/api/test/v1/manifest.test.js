@@ -18,7 +18,6 @@ test('manifest is non-empty and covers every known route file', () => {
   const files = new Set(MANIFEST.map((e) => e.file));
   assert.ok(files.has('server/api/routes/blocks.js'));
   assert.ok(files.has('server/api/routes/transactions/tx-detail.js'));
-  assert.ok(files.has('server/signals/api.js'));
 });
 
 test('every entry has a valid classification and v1.status', () => {
@@ -115,7 +114,6 @@ test('classification counts are reported (informational; also guards against sil
   for (const c of CLASSIFICATIONS) counts[c] = 0;
   for (const entry of MANIFEST) counts[entry.classification]++;
   assert.ok(counts.public >= 70, `expected at least 70 public entries, got ${counts.public}`);
-  assert.ok(counts.private >= 3);
   assert.ok(counts.internal >= 2);
   assert.ok(counts.ops >= 2);
   assert.ok(counts.deprecated >= 1);

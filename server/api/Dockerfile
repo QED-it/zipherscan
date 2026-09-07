@@ -24,7 +24,6 @@ LABEL org.opencontainers.image.title="cipherscan-api" \
 COPY --from=deps /app/server/api/node_modules ./node_modules
 COPY server/api/ ./
 COPY server/lib/ ../lib/
-COPY server/signals/ ../signals/
 RUN mkdir -p /var/cache/cipherscan/compact-blocks \
     && chown -R 1000:1000 /var/cache/cipherscan
 
