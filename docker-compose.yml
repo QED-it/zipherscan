@@ -14,7 +14,7 @@
 #   LIGHTWALLETD_IMAGE=electriccoinco/lightwalletd@sha256:<digest>
 # Locally built images (web, api) bake the source commit via GIT_COMMIT.
 
-name: cipherscan
+name: zipherscan
 
 services:
   # ----- Zebra full node (JSON-RPC for the API and lightwalletd) -----
