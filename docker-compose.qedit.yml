@@ -1,0 +1,46 @@
+# Overlay: run web + API + Postgres against QED-it's ZSA1_1 testnet node
+# (rpc.test-zsa.org) instead of the local zebrad. See docs/run-locally.md.
+#
+#   docker compose --env-file .env.docker \
+#     -f docker-compose.yml -f docker-compose.qedit.yml up -d --build
+#
+# Set ZEBRA_RPC_URL in .env.docker to point at a different node (e.g. a local
+# ZSA zebrad on http://host.docker.internal:18232).
+
+services:
+  # Parked behind a profile: not started unless `--profile local-node`.
+  zebrad:
+    profiles: [local-node]
+  lightwalletd:
+    profiles: [local-node]
+
+  api:
+    build:
+      # server/api/Dockerfile COPYs server/api and server/lib, so it needs the
+      # repo root as context (the base file passes ./server/api).
+      context: .
+      dockerfile: server/api/Dockerfile
+    depends_on: !override
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    environment:
+      NETWORK: testnet
+      API_CACHE_NAMESPACE: ${API_CACHE_NAMESPACE:-zsa1}
+      ZEBRA_RPC_URL: ${ZEBRA_RPC_URL:-https://rpc.test-zsa.org}
+      # No gRPC through the tunnel; the API falls back to RPC polling.
+      ZEBRA_GRPC_URL: ""
+
+  web:
+    build:
+      args:
+        NEXT_PUBLIC_NETWORK: testnet
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+    depends_on: !override
+      - api
+    environment:
+      NEXT_PUBLIC_NETWORK: testnet
+      ZCASH_RPC_URL: ${ZEBRA_RPC_URL:-https://rpc.test-zsa.org}
