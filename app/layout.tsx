@@ -29,23 +29,23 @@ const baseUrl = getBaseUrl();
 
 const siteCopy = network === 'mainnet'
   ? {
-      title: 'CipherScan: Zcash Block Explorer & Privacy Analytics',
-      description: 'CipherScan is a Zcash block explorer for searching blocks, transactions, and addresses, with live shielded pool, privacy, and network analytics.',
-      keywords: ['zcash block explorer', 'zcash explorer', 'ZEC explorer', 'zcash blockchain explorer', 'zcash transactions', 'zcash shielded pool', 'privacy', 'ZEC', 'CipherScan', 'zcash rich list', 'zcash network'],
-      imageAlt: 'CipherScan - Zcash Block Explorer',
+      title: 'ZipherScan: Zcash Block Explorer & Privacy Analytics',
+      description: 'ZipherScan is a Zcash block explorer for searching blocks, transactions, and addresses, with live shielded pool, privacy, and network analytics.',
+      keywords: ['zcash block explorer', 'zcash explorer', 'ZEC explorer', 'zcash blockchain explorer', 'zcash transactions', 'zcash shielded pool', 'privacy', 'ZEC', 'ZipherScan', 'zcash rich list', 'zcash network'],
+      imageAlt: 'ZipherScan - Zcash Block Explorer',
     }
   : network === 'testnet'
     ? {
-        title: 'CipherScan Testnet - Zcash Testnet Explorer for TAZ',
-        description: 'Explore the Zcash testnet with CipherScan. Search TAZ blocks, transactions, and addresses, monitor pending transactions, and inspect testnet network activity.',
-        keywords: ['zcash testnet', 'TAZ', 'TAZ explorer', 'zcash testnet explorer', 'zcash testnet transactions', 'CipherScan testnet'],
-        imageAlt: 'CipherScan - Zcash Testnet Explorer for TAZ',
+        title: 'ZipherScan Testnet - Zcash Testnet Explorer for TAZ',
+        description: 'Explore the Zcash testnet with ZipherScan. Search TAZ blocks, transactions, and addresses, monitor pending transactions, and inspect testnet network activity.',
+        keywords: ['zcash testnet', 'TAZ', 'TAZ explorer', 'zcash testnet explorer', 'zcash testnet transactions', 'ZipherScan testnet'],
+        imageAlt: 'ZipherScan - Zcash Testnet Explorer for TAZ',
       }
     : {
-        title: 'CipherScan Crosslink - Zcash Crosslink Explorer',
+        title: 'ZipherScan Crosslink - Zcash Crosslink Explorer',
         description: 'Explore the Zcash Crosslink feature network, including blocks, finality, staking, and validators.',
         keywords: ['zcash crosslink', 'crosslink explorer', 'zcash finality', 'cTAZ'],
-        imageAlt: 'CipherScan - Zcash Crosslink Explorer',
+        imageAlt: 'ZipherScan - Zcash Crosslink Explorer',
       };
 
 const rootPageMetadata = buildPageMetadata({
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   ...rootPageMetadata,
   authors: [{ name: "Kenbak" }],
   creator: "Kenbak",
-  publisher: "CipherScan",
+  publisher: "ZipherScan",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -79,10 +79,10 @@ export const metadata: Metadata = {
 // "cipherscan" brand query; Organization with sameAs links the domain to
 // our social/code profiles for entity disambiguation.
 const websiteAlternateNames = network === 'mainnet'
-  ? ['CipherScan Zcash Explorer', 'cipherscan.app']
+  ? ['ZipherScan Zcash Explorer', 'cipherscan.app']
   : network === 'testnet'
-    ? ['CipherScan Testnet', 'Zcash Testnet Explorer', 'TAZ Explorer']
-    : ['CipherScan Crosslink', 'Zcash Crosslink Explorer'];
+    ? ['ZipherScan Testnet', 'Zcash Testnet Explorer', 'TAZ Explorer']
+    : ['ZipherScan Crosslink', 'Zcash Crosslink Explorer'];
 
 const siteJsonLd = {
   '@context': 'https://schema.org',
@@ -90,7 +90,7 @@ const siteJsonLd = {
     {
       '@type': 'WebSite',
       '@id': `${baseUrl}/#website`,
-      name: 'CipherScan',
+      name: 'ZipherScan',
       alternateName: websiteAlternateNames,
       description: siteCopy.description,
       url: `${baseUrl}/`,
@@ -99,7 +99,7 @@ const siteJsonLd = {
     {
       '@type': 'Organization',
       '@id': 'https://cipherscan.app/#organization',
-      name: 'CipherScan',
+      name: 'ZipherScan',
       url: 'https://cipherscan.app',
       logo: 'https://cipherscan.app/apple-touch-icon.png',
       sameAs: [
