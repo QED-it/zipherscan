@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
           source: '/sitemap-:slug.xml',
           destination: '/sitemaps/:slug',
         },
+        // Same-origin proxy to the API container, so the browser never needs a
+        // second public hostname. afterFiles, so the app's own /api routes win.
+        {
+          source: '/api/:path*',
+          destination: `${process.env.CIPHERSCAN_API_URL || 'http://api:3001'}/api/:path*`,
+        },
       ],
       fallback: [],
     };
