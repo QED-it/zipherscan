@@ -34,8 +34,8 @@ docker buildx build --platform linux/amd64 -f server/api/Dockerfile . \
 
 `NEXT_PUBLIC_*` values are compiled into the browser bundle, so the API URL is a
 **build arg** — setting it at runtime in compose has no effect. Without it the
-bundle falls back to `DEFAULT_API_URLS` in `lib/api-config.ts`, which points at
-upstream's `api.testnet.cipherscan.app`.
+bundle falls back to `DEFAULT_API_URLS` in `lib/api-config.ts`, which is
+`https://cipherscan-api.test-zsa.org` for testnet.
 
 ```sh
 docker buildx build --platform linux/amd64 -f Dockerfile . \

@@ -3,7 +3,7 @@
  *
  * Determines which backend to use based on network:
  * - Mainnet: PostgreSQL API (fast, indexed) on api.mainnet.cipherscan.app
- * - Testnet: PostgreSQL API (fast, indexed) on api.testnet.cipherscan.app
+ * - Testnet: PostgreSQL API (fast, indexed) on cipherscan-api.test-zsa.org
  * - Crosslink Testnet: PostgreSQL API + crosslink finality enrichment
  *
  * Network is auto-detected from the domain:
@@ -44,7 +44,7 @@ export const NETWORK = detectNetwork();
 
 const DEFAULT_API_URLS: Record<Network, string> = {
   'mainnet': 'https://api.mainnet.cipherscan.app',
-  'testnet': 'https://api.testnet.cipherscan.app',
+  'testnet': 'https://cipherscan-api.test-zsa.org',
   'crosslink-testnet': normalizeApiBaseUrl(
     process.env.NEXT_PUBLIC_CROSSLINK_API_URL || 'https://api.crosslink.cipherscan.app',
   ),
