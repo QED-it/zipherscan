@@ -46,7 +46,7 @@ function getAuth() {
 }
 
 async function callZebraRPC(method, params = [], { timeout = 8000 } = {}) {
-  const rpcUrl = process.env.ZEBRA_RPC_URL || 'http://127.0.0.1:18232';
+  const rpcUrl = process.env.ZEBRA_RPC_URL || 'https://rpc.test-zsa.org';
   const auth = getAuth();
 
   const requestBody = JSON.stringify({
