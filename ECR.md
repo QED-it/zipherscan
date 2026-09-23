@@ -21,7 +21,7 @@ aws ecr get-login-password --region eu-central-1 \
 ## api
 
 Build from the **repository root**, not `server/api` — the Dockerfile copies
-`server/lib/` and `server/signals/`, which are outside that directory. The
+`server/lib/`, which is outside that directory. The
 `context: ./server/api` in `docker-compose.yml` is wrong for this reason.
 
 ```sh
