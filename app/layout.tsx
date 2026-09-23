@@ -36,10 +36,10 @@ const siteCopy = network === 'mainnet'
     }
   : network === 'testnet'
     ? {
-        title: 'ZipherScan Testnet - Zcash Testnet Explorer for TAZ',
-        description: 'Explore the Zcash testnet with ZipherScan. Search TAZ blocks, transactions, and addresses, monitor pending transactions, and inspect testnet network activity.',
-        keywords: ['zcash testnet', 'TAZ', 'TAZ explorer', 'zcash testnet explorer', 'zcash testnet transactions', 'ZipherScan testnet'],
-        imageAlt: 'ZipherScan - Zcash Testnet Explorer for TAZ',
+        title: 'ZipherScan Testnet - Zcash Testnet Explorer for ZSA',
+        description: 'Explore the QED-it Zcash Shielded Assets (ZSA) testnet with ZipherScan. Search blocks, transactions, and addresses, monitor pending transactions, and inspect testnet network activity.',
+        keywords: ['zcash testnet', 'ZSA', 'zcash shielded assets', 'ZSA testnet', 'zcash testnet explorer', 'zcash testnet transactions', 'ZipherScan testnet'],
+        imageAlt: 'ZipherScan - Zcash Testnet Explorer for ZSA',
       }
     : {
         title: 'ZipherScan Crosslink - Zcash Crosslink Explorer',
