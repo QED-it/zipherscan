@@ -1,4 +1,4 @@
-# CipherScan local application stack: zebrad + lightwalletd + Postgres + Redis
+# CipherScan local application stack: zebrad + Postgres + Redis
 # + API + web. The production Rust indexer lives in the adjacent
 # cipherscan-rust repository; its committed schema and migrations are mounted
 # here so local services use the same database contract as CI/production.
@@ -11,13 +11,12 @@
 #
 # To pin a service to a specific commit image, set e.g.
 #   ZEBRA_IMAGE=zfnd/zebra:sha-<commit>
-#   LIGHTWALLETD_IMAGE=electriccoinco/lightwalletd@sha256:<digest>
 # Locally built images (web, api) bake the source commit via GIT_COMMIT.
 
 name: zipherscan
 
 services:
-  # ----- Zebra full node (JSON-RPC for the API and lightwalletd) -----
+  # ----- Zebra full node (JSON-RPC for the API) -----
   zebrad:
     image: ${ZEBRA_IMAGE:-zfnd/zebra:2.4.0}
     restart: unless-stopped
@@ -31,26 +30,6 @@ services:
       - zebrad-state:/var/cache/zebrad
     expose:
       - "8232"
-    networks: [cipherscan]
-
-  # ----- lightwalletd (compact block gRPC over the zebrad RPC) -----
-  lightwalletd:
-    image: ${LIGHTWALLETD_IMAGE:-electriccoinco/lightwalletd:v0.4.17}
-    restart: unless-stopped
-    depends_on:
-      - zebrad
-    command:
-      - "--grpc-bind-addr=0.0.0.0:9067"
-      - "--http-bind-addr=0.0.0.0:9068"
-      - "--no-tls-very-insecure"
-      - "--zcash-conf-path=/etc/lightwalletd/zcash.conf"
-      - "--data-dir=/var/lib/lightwalletd"
-      - "--log-file=/dev/stdout"
-    volumes:
-      - ./docker/lightwalletd/zcash.conf:/etc/lightwalletd/zcash.conf:ro
-      - lightwalletd-data:/var/lib/lightwalletd
-    expose:
-      - "9067"
     networks: [cipherscan]
 
   # ----- PostgreSQL (explorer database) -----
@@ -143,7 +122,7 @@ services:
       API_LIST_CACHE_MAX_ENTRIES: ${API_LIST_CACHE_MAX_ENTRIES:-1000}
       API_LIST_CACHE_REDIS_TIMEOUT_MS: ${API_LIST_CACHE_REDIS_TIMEOUT_MS:-50}
       ZEBRA_RPC_URL: http://zebrad:8232
-      ZEBRA_GRPC_URL: lightwalletd:9067
+      ZEBRA_GRPC_URL: ""
       COMPACT_BLOCK_CACHE_DIR: /var/cache/cipherscan/compact-blocks
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
     volumes:
@@ -175,8 +154,6 @@ services:
       CIPHERSCAN_API_URL: http://api:3001
       # Browser-side calls (adjust to your published host):
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
-      NEXT_PUBLIC_LIGHTWALLETD_HOST: ${NEXT_PUBLIC_LIGHTWALLETD_HOST:-lightwalletd}
-      NEXT_PUBLIC_LIGHTWALLETD_PORT: "9067"
     ports:
       - "${WEB_PORT:-3000}:3000"
     networks: [cipherscan]
@@ -187,7 +164,6 @@ networks:
 
 volumes:
   zebrad-state:
-  lightwalletd-data:
   postgres-data:
   redis-data:
   api-cache:

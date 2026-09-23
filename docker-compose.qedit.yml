@@ -11,8 +11,6 @@ services:
   # Parked behind a profile: not started unless `--profile local-node`.
   zebrad:
     profiles: [local-node]
-  lightwalletd:
-    profiles: [local-node]
 
   api:
     build:
