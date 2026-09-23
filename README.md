@@ -6,7 +6,7 @@ A block explorer for [Zebra](https://github.com/QED-it/zebra) with ZSA (Zcash Sh
 
 - Targets QED-it's ZSA1_1 testnet node (`https://rpc.test-zsa.org`) rather than the public Zcash networks. See [docs/run-locally.md](docs/run-locally.md) for running it and for connecting to that node or your own ZSA zebrad.
 - Upstream analytics, donation UI, Telegram signals and third-party CDN calls are removed. Redis is removed; the API uses in-process caches and a single instance.
-- Deployment is Docker Compose; `docker-compose.qedit.yml` overlays the upstream stack to use the remote node.
+- Deployment is Docker Compose: one `docker-compose.yml` runs Postgres, API and web against the remote ZSA node.
 
 **Branches**: `zsa1` is the main line and tracks upstream `main`. Open PRs against it.
 

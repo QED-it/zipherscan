@@ -30,7 +30,7 @@ jobs:
           chmod +x /usr/local/bin/hadolint
           hadolint --version
       - name: Lint Dockerfiles
-        run: hadolint --config .hadolint.yaml Dockerfile server/api/Dockerfile docker/zebra/Dockerfile
+        run: hadolint --config .hadolint.yaml Dockerfile server/api/Dockerfile
 
   # ---------------------------------------------------------------------------
   # Build the application images (web + api). No push.
