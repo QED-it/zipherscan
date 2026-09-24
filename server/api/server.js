@@ -252,14 +252,18 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 
+// CORS_ORIGINS (comma-separated) extends both the CORS and WebSocket allowlists.
+const EXTRA_ORIGINS = (process.env.CORS_ORIGINS || '').split(',').map((o) => o.trim()).filter(Boolean);
+
 // CORS configuration (only allow your domains)
 const allowedOrigins = [
+  'https://cipherscan.test-zsa.org',
   'https://testnet.cipherscan.app',
   'https://cipherscan.app',
   'https://crosslink.cipherscan.app',
   'http://localhost:3000',
   'http://localhost:3001',
-  ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
+  ...EXTRA_ORIGINS,
 ];
 
 app.use(cors({
@@ -307,12 +311,14 @@ const SERVICE_API_KEYS = (process.env.SERVICE_API_KEYS || '').split(',').filter(
 
 // Our own frontend domains — never rate-limit browsers visiting CipherScan
 const OWN_ORIGINS = [
+  'https://cipherscan.test-zsa.org',
   'https://cipherscan.app',
   'https://www.cipherscan.app',
   'https://testnet.cipherscan.app',
   'https://crosslink.cipherscan.app',
   'http://localhost:3000',
   'http://localhost:3001',
+  ...EXTRA_ORIGINS,
 ];
 
 // OWN_ORIGINS is used ONLY for the WebSocket upgrade check below — it is
