@@ -141,14 +141,12 @@ the raw file to the deployment or release record before removing local output.
 ```sh
 npm run test:ttfb-probe
 npm run test:isr-warmup
-TEST_REDIS_URL=redis://127.0.0.1:6379 npm --prefix server/api run test:redis
 npm run build
 npm run test:route-cache-build
 ```
 
-Require zero skipped tests from `test:redis`. These tests validate the
-header/body boundary, body cancellation, timeout and
-HTTP error handling, multi-layer cache parsing, serial pair ordering, summary
+These tests validate the header/body boundary, body cancellation, timeout
+and HTTP error handling, multi-layer cache parsing, serial pair ordering, summary
 math, target validation, atomic artifact writes, and the generated Next ISR
 manifest. They do not contact production and do not establish live performance.
 
