@@ -263,22 +263,16 @@ to avoid building the guardrails.
    surface. Recommend adding an ownership token or service-key requirement
    to the legacy endpoint, then revisiting inclusion. (The two scan
    endpoints are no longer excluded/stubbed — see "Scan endpoints" above.)
-4. **Paid/gated `signals` endpoints are out of scope.** `/api/signals/*`
-   uses an x402/CipherPay payment flow (`Authorization: Bearer`/`Payment`
-   headers). Proxying a payment-gated endpoint correctly needs its own
-   design (header forwarding, replay considerations) and was deliberately
-   left out of this first contract pass — see the manifest entries
-   (`classification: 'private'`) for the exact endpoints.
-5. **`indexedHeight` is best-effort.** Every successful adapter response
+4. **`indexedHeight` is best-effort.** Every successful adapter response
    resolves it from `/api/info`, using a five-second process cache. It is
    `null` on failure rather than fabricated; `meta.freshness.status` then
    reports `unavailable`.
-6. **This inventory only covers files under `server/api/routes/**` and
-   `server/signals/api.js`.** `/api/grpc-status`, registered directly in
-   `server/api/server.js` rather than a route file, is out of scope per the
-   task's own boundary ("inventory... from route files") — flagging it
-   explicitly rather than silently omitting it.
-7. **CORS/rate-limiting**: this router does not apply its own CORS or rate
+5. **This inventory only covers files under `server/api/routes/**`.**
+   `/api/grpc-status`, registered directly in `server/api/server.js`
+   rather than a route file, is out of scope per the task's own boundary
+   ("inventory... from route files") — flagging it explicitly rather than
+   silently omitting it.
+6. **CORS/rate-limiting**: this router does not apply its own CORS or rate
    limiting. Mounted in-process (per the default instructions above), it
    inherits `server.js`'s `helmet()`, CORS, and `express-rate-limit`
    middleware, which run before `app.use('/v1', ...)` in the middleware
