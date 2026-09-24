@@ -74,7 +74,7 @@ jobs:
             -e POSTGRES_USER=zcash_user \
             -e POSTGRES_PASSWORD=smoke-test-only \
             -e POSTGRES_DB=zcash_explorer_testnet \
-            postgres:16-alpine
+            postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
           for attempt in $(seq 1 30); do
             if docker exec cipherscan-postgres-smoke \
               pg_isready -h 127.0.0.1 -U zcash_user -d zcash_explorer_testnet >/dev/null; then
