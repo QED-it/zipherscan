@@ -48,7 +48,7 @@ jobs:
           changed="$(git diff --name-only "$base_sha" "${GITHUB_SHA}")"
           if grep -Eq '(^|/)package(-lock)?\.json$' <<< "$changed"; then echo "npm=true" >> "$GITHUB_OUTPUT"; else echo "npm=false" >> "$GITHUB_OUTPUT"; fi
           if grep -Eq '^wasm/Cargo\.(toml|lock)$' <<< "$changed"; then echo "rust=true" >> "$GITHUB_OUTPUT"; else echo "rust=false" >> "$GITHUB_OUTPUT"; fi
-          if grep -Eq '^server/jobs/requirements[^/]*\.txt$' <<< "$changed"; then echo "python=true" >> "$GITHUB_OUTPUT"; else echo "python=false" >> "$GITHUB_OUTPUT"; fi
+          if grep -Eq '^server/jobs/requirements[^/]*\.(txt|in)$' <<< "$changed"; then echo "python=true" >> "$GITHUB_OUTPUT"; else echo "python=false" >> "$GITHUB_OUTPUT"; fi
 
   # ---------------------------------------------------------------------------
   # npm audit across every package.json in the repo
@@ -149,7 +149,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install pip-audit
-        run: pip install pip-audit
+        run: pip install --require-hashes -r requirements-audit.txt
       - name: Audit
         run: pip-audit -r requirements.txt
 
