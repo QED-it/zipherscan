@@ -2,9 +2,9 @@ name: Security audit
 
 on:
   push:
-    branches: [main, dev]
+    branches: [zsa1]
   pull_request:
-    branches: [main, dev]
+    branches: [zsa1]
   schedule:
     # Weekly re-scan so newly disclosed CVEs surface even without a push.
     - cron: "0 6 * * 1"

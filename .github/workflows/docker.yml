@@ -2,9 +2,9 @@ name: Docker
 
 on:
   push:
-    branches: [main, dev]
+    branches: [zsa1]
   pull_request:
-    branches: [main, dev]
+    branches: [zsa1]
   workflow_dispatch:
 
 concurrency:
