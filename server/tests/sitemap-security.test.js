@@ -564,6 +564,9 @@ test('legacy migration and swap routes permanently consolidate authority', async
   assert.deepEqual(rewrites.afterFiles, [{
     source: '/sitemap-:slug.xml',
     destination: '/sitemaps/:slug',
+  }, {
+    source: '/api/:path*',
+    destination: 'http://api:3001/api/:path*',
   }]);
   assert.deepEqual(rewrites.fallback, []);
 
