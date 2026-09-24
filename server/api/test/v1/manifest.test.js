@@ -92,8 +92,8 @@ test('every public-classified entry is an adapter — never a stub or excluded (
   }
 });
 
-test('the two scan endpoints are public adapters with v1-layer cost validation AND rate limiting (not blanket-proxied)', () => {
-  for (const legacyPath of ['/api/scan/orchard', '/api/lightwalletd/scan']) {
+test('the scan endpoint is a public adapter with v1-layer cost validation AND rate limiting (not blanket-proxied)', () => {
+  for (const legacyPath of ['/api/scan/orchard']) {
     const entry = MANIFEST.find((e) => e.legacyPath === legacyPath);
     assert.ok(entry, `expected a manifest entry for ${legacyPath}`);
     assert.equal(entry.classification, 'public');

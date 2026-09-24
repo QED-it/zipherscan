@@ -88,12 +88,9 @@ services:
       API_LIST_CACHE_MAX_ENTRIES: ${API_LIST_CACHE_MAX_ENTRIES:-1000}
       ZEBRA_RPC_URL: ${ZEBRA_RPC_URL:-https://rpc.test-zsa.org}
       ZEBRA_GRPC_URL: ""
-      COMPACT_BLOCK_CACHE_DIR: /var/cache/cipherscan/compact-blocks
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    volumes:
-      - api-cache:/var/cache/cipherscan
     ports:
       - "${API_PORT:-3001}:3001"
     networks: [zipherscan]
@@ -131,4 +128,3 @@ networks:
 
 volumes:
   postgres-data:
-  api-cache:

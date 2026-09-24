@@ -75,10 +75,6 @@ const faqs = [
     question: 'Which transaction types are supported?',
     answer: 'Orchard and Ironwood shielded transactions. Sapling memo decryption isn\u2019t supported yet (Sapling notes carry memos too, but this tool can\u2019t decrypt them). Transparent transactions have no encrypted memo field.',
   },
-  {
-    question: 'Can I scan all my transactions at once?',
-    answer: 'Yes — switch to the "Inbox" tab. It scans recent Orchard transactions and decrypts any that match your viewing key, all within your browser.',
-  },
 ];
 
 const faqJsonLd = {

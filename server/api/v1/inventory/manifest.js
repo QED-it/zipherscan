@@ -376,15 +376,6 @@ const MANIFEST = [
       notes: 'v1 enforces a stricter max range (default 50,000 blocks vs. legacy\'s 1,000,000, see V1_SCAN_ORCHARD_MAX_RANGE) and a per-IP rate limit (default 5/minute, see V1_SCAN_ORCHARD_RATE_LIMIT_MAX/_WINDOW_MS) before proxying to the legacy endpoint.',
     },
   },
-  {
-    method: 'POST', legacyPath: '/api/lightwalletd/scan', file: 'server/api/routes/scan.js',
-    classification: 'public', domain: 'scan', auth: 'none', description: 'Batch-scan blocks via Lightwalletd gRPC for client-side trial decryption.',
-    v1: {
-      path: '/v1/scan/lightwalletd', status: 'adapter', shape: 'passthrough',
-      validateKey: 'scanLightwalletd', rateLimitKey: 'scanLightwalletd',
-      notes: 'v1 requires an explicit `endHeight` (legacy defaults a missing one to the current chain tip, which v1 treats as an unbounded-until-resolved request shape and rejects), enforces a stricter max range (default 10,000 blocks vs. legacy\'s 50,000, see V1_SCAN_LIGHTWALLETD_MAX_RANGE — lightwalletd scanning is more expensive per block: gRPC + parallel streaming + optional disk cache writes), and a per-IP rate limit (default 3/minute, see V1_SCAN_LIGHTWALLETD_RATE_LIMIT_MAX/_WINDOW_MS) before proxying.',
-    },
-  },
 
   // ---------------------------------------------------------------------
   // sitemaps.js — internal SEO infrastructure, out of v1 scope

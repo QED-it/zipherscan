@@ -39,9 +39,9 @@
  *                             every v1 response's meta.network.
  *
  *   --- Scan endpoint (v1-only) safety controls ---
- *   These endpoints (/v1/scan/orchard, /v1/scan/lightwalletd) are public and
- *   proxy straight through to legacy handlers that already bound cost
- *   server-side (1,000,000 / 50,000 block ranges respectively, see
+ *   This endpoint (/v1/scan/orchard) is public and proxies straight through
+ *   to a legacy handler that already bounds cost server-side (1,000,000
+ *   block ranges, see
  *   server/api/routes/scan.js). v1 adds its OWN, stricter, independently
  *   configurable range caps and per-IP rate limits so the more-discoverable
  *   /v1 surface can't hand out a bigger cost knob than legacy intended.
@@ -49,13 +49,6 @@
  *   V1_SCAN_ORCHARD_MAX_RANGE            Default: 50000 blocks/request.
  *   V1_SCAN_ORCHARD_RATE_LIMIT_MAX       Default: 5 requests.
  *   V1_SCAN_ORCHARD_RATE_LIMIT_WINDOW_MS Default: 60000 (1 minute).
- *   V1_SCAN_LIGHTWALLETD_MAX_RANGE            Default: 10000 blocks/request
- *                                              (lightwalletd scan is far more
- *                                              expensive per block: gRPC +
- *                                              parallel streaming + optional
- *                                              disk cache writes).
- *   V1_SCAN_LIGHTWALLETD_RATE_LIMIT_MAX       Default: 3 requests.
- *   V1_SCAN_LIGHTWALLETD_RATE_LIMIT_WINDOW_MS Default: 60000 (1 minute).
  */
 
 function parseBool(value, fallback = false) {
@@ -86,13 +79,6 @@ function loadV1Config(env = process.env) {
         rateLimit: {
           max: parseIntOr(env.V1_SCAN_ORCHARD_RATE_LIMIT_MAX, 5),
           windowMs: parseIntOr(env.V1_SCAN_ORCHARD_RATE_LIMIT_WINDOW_MS, 60_000),
-        },
-      },
-      lightwalletd: {
-        maxRange: parseIntOr(env.V1_SCAN_LIGHTWALLETD_MAX_RANGE, 10_000),
-        rateLimit: {
-          max: parseIntOr(env.V1_SCAN_LIGHTWALLETD_RATE_LIMIT_MAX, 3),
-          windowMs: parseIntOr(env.V1_SCAN_LIGHTWALLETD_RATE_LIMIT_WINDOW_MS, 60_000),
         },
       },
     },

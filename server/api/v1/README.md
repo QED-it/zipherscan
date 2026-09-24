@@ -126,8 +126,6 @@ That's the entire integration surface. `createV1Router()`:
 | `NEXT_PUBLIC_NETWORK` | `testnet` | Reused as-is; surfaced in every response's `meta.network`. |
 | `V1_SCAN_ORCHARD_MAX_RANGE` | `50000` | Max block-height range per `/v1/scan/orchard` request (legacy allows up to 1,000,000; v1 tightens this — see "Scan endpoints" below). |
 | `V1_SCAN_ORCHARD_RATE_LIMIT_MAX` / `_WINDOW_MS` | `5` / `60000` | Per-IP rate limit for `/v1/scan/orchard`. |
-| `V1_SCAN_LIGHTWALLETD_MAX_RANGE` | `10000` | Max block-height range per `/v1/scan/lightwalletd` request (legacy allows up to 50,000). |
-| `V1_SCAN_LIGHTWALLETD_RATE_LIMIT_MAX` / `_WINDOW_MS` | `3` / `60000` | Per-IP rate limit for `/v1/scan/lightwalletd`. |
 
 ### Recommended rollout sequence
 
@@ -203,13 +201,12 @@ one:
 
 ## Scan endpoints: public coverage with v1-only guardrails
 
-`/v1/scan/orchard` and `/v1/scan/lightwalletd` are `public` in the
-manifest, so per the "complete public coverage" requirement they are
-**adapters**, not stubs. Their legacy handlers already bound worst-case
-cost (max 1,000,000 / 50,000 block ranges respectively — see
+`/v1/scan/orchard` is `public` in the manifest, so per the "complete
+public coverage" requirement it is an **adapter**, not a stub. Its legacy
+handler already bounds worst-case cost (max 1,000,000 block range — see
 `server/api/routes/scan.js`), but that's a bigger cost knob than is prudent
 to hand out on a newly-discoverable `/v1` surface with no other write
-history. Rather than reclassify them non-public without concrete product
+history. Rather than reclassify it non-public without concrete product
 evidence to justify it, v1 adds two independent layers in front of the
 existing legacy protections (`lib/scan-validation.js`, `lib/rate-limit.js`,
 wired in per-entry via the manifest's `validateKey`/`rateLimitKey`):
@@ -217,15 +214,8 @@ wired in per-entry via the manifest's `validateKey`/`rateLimitKey`):
 1. **Stricter range validation, evaluated before any legacy dispatch:**
    - `/v1/scan/orchard`: range capped at `V1_SCAN_ORCHARD_MAX_RANGE`
      (default 50,000 blocks vs. legacy's 1,000,000).
-   - `/v1/scan/lightwalletd`: range capped at `V1_SCAN_LIGHTWALLETD_MAX_RANGE`
-     (default 10,000 — tighter than orchard, because lightwalletd scanning
-     is far more expensive per block: gRPC + parallel streaming + optional
-     disk cache writes). **v1 also requires an explicit `endHeight`** —
-     unlike legacy, which defaults a missing `endHeight` to the current
-     chain tip (an open-ended-until-resolved request shape v1 does not
-     accept from a public, unauthenticated caller).
 2. **Per-IP rate limiting**, independent of the legacy API's own global
-   limiter: 5/minute (orchard) and 3/minute (lightwalletd) by default.
+   limiter: 5/minute by default.
    In-memory, per-process — see `lib/rate-limit.js`'s docblock for why
    `express-rate-limit` was deliberately not used, and the same
    multi-instance caveat the existing WebSocket fallback limiter in
@@ -261,8 +251,8 @@ to avoid building the guardrails.
    change; it's flagged here because v1 deliberately does *not* extend
    that unauthenticated destructive mutation onto a new, more discoverable
    surface. Recommend adding an ownership token or service-key requirement
-   to the legacy endpoint, then revisiting inclusion. (The two scan
-   endpoints are no longer excluded/stubbed — see "Scan endpoints" above.)
+   to the legacy endpoint, then revisiting inclusion. (The scan
+   endpoint is no longer excluded/stubbed — see "Scan endpoints" above.)
 4. **`indexedHeight` is best-effort.** Every successful adapter response
    resolves it from `/api/info`, using a five-second process cache. It is
    `null` on failure rather than fabricated; `meta.freshness.status` then
