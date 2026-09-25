@@ -50,7 +50,7 @@ echo "────────────────────────�
 # Check if Python dependencies are installed
 if ! python3 -c "import sklearn, psycopg2, numpy" 2>/dev/null; then
     echo "⚠️  Python dependencies not installed. Installing..."
-    pip3 install -r "$SCRIPT_DIR/requirements.txt" --quiet
+    pip3 install --require-hashes -r "$SCRIPT_DIR/requirements.txt" --quiet
 fi
 
 python3 "$SCRIPT_DIR/ml-pattern-detector.py" "${DRY_RUN_ARGS[@]}"
