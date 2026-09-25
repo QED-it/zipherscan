@@ -63,9 +63,10 @@ const BASE_RECONNECT_MS = 3000;
 const MAX_RECONNECT_MS = 30000;
 const HEARTBEAT_INTERVAL_MS = 25000;
 
+// Under /api/ so the site's /api proxy forwards the upgrade (Next closes
+// upgrades on page paths like "/"); the API accepts WebSockets on any path.
 function buildWsUrl(): string {
-  const apiUrl = getApiUrl();
-  return apiUrl.replace(/^http/, 'ws').replace(/\/api$/, '');
+  return `${getApiUrl().replace(/^http/, 'ws')}/api/ws`;
 }
 
 export function WebSocketProvider({ children }: { children: ReactNode }) {

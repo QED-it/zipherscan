@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { DonateButton } from '@/components/DonateButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
 import { isMainnet, isCrosslink, MAINNET_URL, TESTNET_URL, NETWORK_LABEL } from '@/lib/config';
@@ -66,10 +65,7 @@ export function Footer() {
               <Link href="/newsletter" className="footer-link text-[11px] font-mono">Newsletter</Link>
               <Link href="/about" className="footer-link text-[11px] font-mono">About</Link>
               <Link href="/press" className="footer-link text-[11px] font-mono">Press &amp; Brand</Link>
-              <DonateButton variant="link" />
-              <a href="https://twitter.com/cipherscan_app" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">X / Twitter</a>
-              <a href="https://github.com/Kenbak/cipherscan" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">GitHub</a>
-              <a href="https://www.youtube.com/@AtmosphereLabsDev" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">YouTube</a>
+              <a href="https://github.com/QED-it/cipherscan" target="_blank" rel="noopener noreferrer" className="footer-link text-[11px] font-mono">GitHub</a>
             </div>
           </div>
         </div>
@@ -79,11 +75,11 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-mono text-muted/30 text-center">
               <Link href="/" className="inline-flex items-center gap-1 mr-1">
-                <Image src="/logo.png" alt="CipherScan" width={14} height={14} quality={100} unoptimized />
-                <span className="font-bold text-cipher-cyan tracking-wider">CIPHERSCAN</span>
+                <Image src="/logo.png" alt="ZipherScan" width={14} height={14} quality={100} unoptimized />
+                <span className="font-bold text-cipher-cyan tracking-wider">ZIPHERSCAN</span>
               </Link>
               <span className="text-muted/20">|</span>
-              <span>© {new Date().getFullYear()} CipherScan</span>
+              <span>© {new Date().getFullYear()} ZipherScan</span>
               <span className="text-muted/20">|</span>
               <span>Powered by <span className="text-muted/50">Zebrad</span></span>
               <span className="text-muted/20">|</span>

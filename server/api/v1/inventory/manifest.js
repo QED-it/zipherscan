@@ -2,8 +2,8 @@
  * server/api/v1/inventory/manifest.js
  *
  * SINGLE SOURCE OF TRUTH for:
- *   1. The complete inventory of legacy endpoints found in server/api/routes/**
- *      and server/signals/api.js, each classified as:
+ *   1. The complete inventory of legacy endpoints found in server/api/routes/**,
+ *      each classified as:
  *        - public      user-facing data/action, no auth, safe to document externally
  *        - internal    used by our own frontend/SSR/sitemap generation only,
  *                       not intended as a general external API contract
@@ -376,15 +376,6 @@ const MANIFEST = [
       notes: 'v1 enforces a stricter max range (default 50,000 blocks vs. legacy\'s 1,000,000, see V1_SCAN_ORCHARD_MAX_RANGE) and a per-IP rate limit (default 5/minute, see V1_SCAN_ORCHARD_RATE_LIMIT_MAX/_WINDOW_MS) before proxying to the legacy endpoint.',
     },
   },
-  {
-    method: 'POST', legacyPath: '/api/lightwalletd/scan', file: 'server/api/routes/scan.js',
-    classification: 'public', domain: 'scan', auth: 'none', description: 'Batch-scan blocks via Lightwalletd gRPC for client-side trial decryption.',
-    v1: {
-      path: '/v1/scan/lightwalletd', status: 'adapter', shape: 'passthrough',
-      validateKey: 'scanLightwalletd', rateLimitKey: 'scanLightwalletd',
-      notes: 'v1 requires an explicit `endHeight` (legacy defaults a missing one to the current chain tip, which v1 treats as an unbounded-until-resolved request shape and rejects), enforces a stricter max range (default 10,000 blocks vs. legacy\'s 50,000, see V1_SCAN_LIGHTWALLETD_MAX_RANGE — lightwalletd scanning is more expensive per block: gRPC + parallel streaming + optional disk cache writes), and a per-IP rate limit (default 3/minute, see V1_SCAN_LIGHTWALLETD_RATE_LIMIT_MAX/_WINDOW_MS) before proxying.',
-    },
-  },
 
   // ---------------------------------------------------------------------
   // sitemaps.js — internal SEO infrastructure, out of v1 scope
@@ -392,12 +383,6 @@ const MANIFEST = [
   { method: 'GET', legacyPath: '/api/sitemaps/blocks', file: 'server/api/routes/sitemaps.js', classification: 'internal', domain: 'sitemaps', auth: 'none', description: 'Block sitemap shard data, consumed by app/sitemap.ts.', v1: { status: 'excluded', notes: 'SEO infrastructure for our own Next.js sitemap generation, not a general external data contract.' } },
   { method: 'GET', legacyPath: '/api/sitemaps/transactions/recent', file: 'server/api/routes/sitemaps.js', classification: 'internal', domain: 'sitemaps', auth: 'none', description: 'Recent-transaction sitemap shard data.', v1: { status: 'excluded', notes: 'Same as /api/sitemaps/blocks.' } },
 
-  // ---------------------------------------------------------------------
-  // server/signals/api.js — paid feature (x402 / CipherPay), out of v1 scope
-  // ---------------------------------------------------------------------
-  { method: 'GET', legacyPath: '/api/signals/latest', file: 'server/signals/api.js', classification: 'private', domain: 'signals', auth: 'service-key|bearer|x402', description: 'Current trading signal + 7-day history (paid).', v1: { status: 'excluded', notes: 'Payment-gated (x402/CipherPay session). Proxying would need to forward Authorization/x402 payment headers end-to-end and is deliberately excluded from the initial v1 contract; revisit once a monetized-endpoint pattern exists in v1.' } },
-  { method: 'GET', legacyPath: '/api/signals/history', file: 'server/signals/api.js', classification: 'private', domain: 'signals', auth: 'service-key|bearer|x402', description: 'Full trading signal history (paid).', v1: { status: 'excluded', notes: 'See /api/signals/latest.' } },
-  { method: 'GET', legacyPath: '/api/signals/performance', file: 'server/signals/api.js', classification: 'private', domain: 'signals', auth: 'service-key|bearer|x402', description: 'Backtest performance summary (paid).', v1: { status: 'excluded', notes: 'See /api/signals/latest.' } },
 ];
 
 // -- Small integrity checks that run at require()-time (cheap, synchronous,

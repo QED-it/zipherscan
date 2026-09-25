@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SingleTxDecrypt } from '@/components/SingleTxDecrypt';
-import { ScanMyTransactions } from '@/components/ScanMyTransactions';
-import { Card, CardBody, Tabs } from '@/components/ui';
+import { Card, CardBody } from '@/components/ui';
 
 const Icons = {
   Info: ({ className = 'w-4 h-4' }: { className?: string }) => (
@@ -15,7 +14,6 @@ const Icons = {
 };
 
 export default function DecryptPageClient() {
-  const [activeTab, setActiveTab] = useState<'single' | 'scan'>('single');
 
   // Check for prefill parameter
   const [prefillTxid, setPrefillTxid] = useState<string | null>(null);
@@ -24,14 +22,7 @@ export default function DecryptPageClient() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const prefill = params.get('prefill');
-      const tab = params.get('tab');
-
-      if (prefill) {
-        setPrefillTxid(prefill);
-        setActiveTab('single'); // Ensure we're on the Single Message tab
-      } else if (tab === 'scan') {
-        setActiveTab('scan'); // Open Inbox tab directly
-      }
+      if (prefill) setPrefillTxid(prefill);
     }
   }, []);
 
@@ -50,21 +41,7 @@ export default function DecryptPageClient() {
         </p>
       </div>
 
-      {/* Mode switch */}
-      <div className="mb-6">
-        <Tabs
-          tabs={[
-            { id: 'single', label: 'Single Message' },
-            { id: 'scan', label: 'Inbox' },
-          ]}
-          active={activeTab}
-          onChange={setActiveTab}
-        />
-      </div>
-
-      {/* Tab Content */}
-      {activeTab === 'single' && <SingleTxDecrypt prefillTxid={prefillTxid} />}
-      {activeTab === 'scan' && <ScanMyTransactions />}
+      <SingleTxDecrypt prefillTxid={prefillTxid} />
 
       {/* Help Card */}
       <Card variant="glass" className="mt-8">

@@ -43,7 +43,7 @@ export const NETWORK_COLOR = isCrosslink ? 'text-cipher-purple' : isMainnet ? 't
 
 // Domain URLs
 export const MAINNET_URL = 'https://cipherscan.app';
-export const TESTNET_URL = 'https://testnet.cipherscan.app';
+export const TESTNET_URL = 'https://cipherscan.test-zsa.org';
 export const CROSSLINK_URL = 'https://crosslink.cipherscan.app';
 
 // Crosslink staking constants (from zebra-consensus)

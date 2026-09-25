@@ -131,16 +131,6 @@ function startMockLegacyServer() {
       return;
     }
 
-    if (req.method === 'POST' && url.pathname === '/api/lightwalletd/scan') {
-      let raw = '';
-      req.on('data', (chunk) => (raw += chunk));
-      req.on('end', () => {
-        const { startHeight, endHeight } = JSON.parse(raw || '{}');
-        send(200, { success: true, blocksScanned: 0, startHeight, endHeight, cachedBlocks: 0, fetchedBlocks: 0, blocks: [] });
-      });
-      return;
-    }
-
     send(404, { error: 'not found in mock' });
   });
 
@@ -386,33 +376,6 @@ test('scan/orchard: per-IP rate limit trips before a request beyond the configur
     assert.ok(second.headers.get('retry-after'));
     const body = await second.json();
     assert.equal(body.title, 'Too Many Requests');
-  });
-});
-
-test('scan/lightwalletd: omitting endHeight is rejected at the v1 layer (legacy would default to chain tip)', async () => {
-  await withServers({}, async (base) => {
-    const res = await fetch(`${base}/v1/scan/lightwalletd`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ startHeight: 100 }),
-    });
-    assert.equal(res.status, 400);
-    const body = await res.json();
-    assert.ok(body.errors.some((e) => e.field === 'endHeight' && /chain tip/.test(e.issue)));
-  });
-});
-
-test('scan/lightwalletd: a valid, in-range request is proxied to legacy and the result relayed', async () => {
-  await withServers({ V1_SCAN_LIGHTWALLETD_MAX_RANGE: '1000' }, async (base) => {
-    const res = await fetch(`${base}/v1/scan/lightwalletd`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ startHeight: 100, endHeight: 200 }),
-    });
-    assert.equal(res.status, 200);
-    const body = await res.json();
-    assert.equal(body.data.startHeight, 100);
-    assert.equal(body.data.endHeight, 200);
   });
 });
 

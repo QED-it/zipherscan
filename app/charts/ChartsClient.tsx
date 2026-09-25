@@ -260,7 +260,7 @@ function NodeMapMiniViz() {
       .catch(() => {});
 
     // Fetch same world topology as the full map for land dots
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
+    fetch('/land-110m.json')
       .then(r => r.json())
       .then(async (topology) => {
         const { feature } = await import('topojson-client');

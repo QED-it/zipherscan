@@ -437,7 +437,7 @@ test('block metadata uses resolved canonical identity through the shared builder
 test('shared metadata policy indexes blocks only on mainnet', () => {
   const cases = [
     { network: 'mainnet', baseUrl: 'https://cipherscan.app', index: true },
-    { network: 'testnet', baseUrl: 'https://testnet.cipherscan.app', index: false },
+    { network: 'testnet', baseUrl: 'https://cipherscan.test-zsa.org', index: false },
     { network: 'crosslink-testnet', baseUrl: 'https://crosslink.cipherscan.app', index: false },
   ];
 
@@ -564,6 +564,9 @@ test('legacy migration and swap routes permanently consolidate authority', async
   assert.deepEqual(rewrites.afterFiles, [{
     source: '/sitemap-:slug.xml',
     destination: '/sitemaps/:slug',
+  }, {
+    source: '/api/:path*',
+    destination: 'http://api:3001/api/:path*',
   }]);
   assert.deepEqual(rewrites.fallback, []);
 
@@ -582,7 +585,7 @@ test('root sitemap is a mainnet index, a testnet homepage set, and an empty Cros
   const sitemap = loadTypeScriptModule('lib/sitemaps.ts');
   const cases = [
     { network: 'mainnet', baseUrl: 'https://cipherscan.app', root: 'sitemapindex' },
-    { network: 'testnet', baseUrl: 'https://testnet.cipherscan.app', root: 'urlset' },
+    { network: 'testnet', baseUrl: 'https://cipherscan.test-zsa.org', root: 'urlset' },
     { network: 'crosslink-testnet', baseUrl: null, root: 'urlset' },
   ];
 
@@ -608,7 +611,7 @@ test('root sitemap is a mainnet index, a testnet homepage set, and an empty Cros
       assert.match(xml, /https:\/\/cipherscan\.app\/sitemap-core\.xml/);
       assert.equal(xml.includes('<priority>'), false);
     } else if (testCase.network === 'testnet') {
-      assert.match(xml, /https:\/\/testnet\.cipherscan\.app\//);
+      assert.match(xml, /https:\/\/cipherscan\.test-zsa\.org\//);
       assert.equal(xml.includes('/blocks'), false);
     } else {
       assert.equal(baseUrlCalls, 0);
@@ -660,7 +663,7 @@ test('child sitemap isolates static cohorts and returns explicit 404/503 failure
   assert.equal(unknown.status, 404);
 
   const testnetRoute = loadRoute('testnet');
-  const testnetChild = await testnetRoute.GET(new Request('https://testnet.cipherscan.app/sitemaps/core'), {
+  const testnetChild = await testnetRoute.GET(new Request('https://cipherscan.test-zsa.org/sitemaps/core'), {
     params: Promise.resolve({ slug: 'core' }),
   });
   assert.equal(testnetChild.status, 404);

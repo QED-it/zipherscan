@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { SearchBar } from '@/components/SearchBar';
-import { DonateButton } from '@/components/DonateButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
 import { NETWORK_LABEL, NETWORK_COLOR, isMainnet, isCrosslink, MAINNET_URL, TESTNET_URL, CROSSLINK_URL } from '@/lib/config';
@@ -158,7 +157,7 @@ export function NavBar() {
             <Link href="/" className="flex items-center space-x-2 group flex-shrink-0">
               <Image
                 src="/logo.png"
-                alt="CipherScan Logo"
+                alt="ZipherScan Logo"
                 width={24}
                 height={24}
                 quality={100}
@@ -167,7 +166,7 @@ export function NavBar() {
               />
               <div>
                 <span className="text-base sm:text-lg font-bold font-mono text-cipher-cyan-bright">
-                  CIPHERSCAN
+                  ZIPHERSCAN
                 </span>
                 <p className={`text-[10px] sm:text-[11px] font-mono ${NETWORK_COLOR} leading-tight`}>[ {NETWORK_LABEL} ]</p>
               </div>
@@ -282,7 +281,6 @@ export function NavBar() {
               {/* Theme + Donate — desktop only */}
               <div className="hidden md:flex items-center gap-1">
                 <ThemeToggle />
-                <DonateButton compact />
               </div>
 
               {/* Mobile: hamburger */}
@@ -322,7 +320,7 @@ export function NavBar() {
           <div className="absolute inset-y-0 right-0 w-full max-w-sm flex flex-col mobile-drawer shadow-2xl animate-slide-in-right">
             {/* Header */}
             <div className="flex items-center justify-between h-16 px-4 border-b navbar-border flex-shrink-0">
-              <span className="text-sm font-bold font-mono text-cipher-cyan-bright">CIPHERSCAN</span>
+              <span className="text-sm font-bold font-mono text-cipher-cyan-bright">ZIPHERSCAN</span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 rounded-md text-muted hover:text-primary transition"
@@ -419,10 +417,9 @@ export function NavBar() {
                     </a>
                   </div>
 
-                  {/* Theme + Donate */}
+                  {/* Theme */}
                   <div className="flex items-center justify-end gap-2">
-                    <DonateButton compact />
-                    <ThemeToggle />
+                        <ThemeToggle />
                   </div>
                 </div>
               </div>

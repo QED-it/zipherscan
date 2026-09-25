@@ -18,7 +18,6 @@ test('manifest is non-empty and covers every known route file', () => {
   const files = new Set(MANIFEST.map((e) => e.file));
   assert.ok(files.has('server/api/routes/blocks.js'));
   assert.ok(files.has('server/api/routes/transactions/tx-detail.js'));
-  assert.ok(files.has('server/signals/api.js'));
 });
 
 test('every entry has a valid classification and v1.status', () => {
@@ -93,8 +92,8 @@ test('every public-classified entry is an adapter — never a stub or excluded (
   }
 });
 
-test('the two scan endpoints are public adapters with v1-layer cost validation AND rate limiting (not blanket-proxied)', () => {
-  for (const legacyPath of ['/api/scan/orchard', '/api/lightwalletd/scan']) {
+test('the scan endpoint is a public adapter with v1-layer cost validation AND rate limiting (not blanket-proxied)', () => {
+  for (const legacyPath of ['/api/scan/orchard']) {
     const entry = MANIFEST.find((e) => e.legacyPath === legacyPath);
     assert.ok(entry, `expected a manifest entry for ${legacyPath}`);
     assert.equal(entry.classification, 'public');
@@ -115,7 +114,6 @@ test('classification counts are reported (informational; also guards against sil
   for (const c of CLASSIFICATIONS) counts[c] = 0;
   for (const entry of MANIFEST) counts[entry.classification]++;
   assert.ok(counts.public >= 70, `expected at least 70 public entries, got ${counts.public}`);
-  assert.ok(counts.private >= 3);
   assert.ok(counts.internal >= 2);
   assert.ok(counts.ops >= 2);
   assert.ok(counts.deprecated >= 1);

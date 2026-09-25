@@ -255,9 +255,6 @@ test('/api/tx/raw/batch (tx-raw.js) per-item failures keep the {txid, success} s
     if (txid === failTxid) throw new Error(SENSITIVE);
     return 'deadbeef';
   };
-  // Force the lightwalletd fast-path off so every item goes through
-  // callZebraRPC (matches production when CompactTxStreamer isn't wired up).
-  app.locals.CompactTxStreamer = null;
   app.use(injectDependencies);
   app.use(txRawRouter);
 

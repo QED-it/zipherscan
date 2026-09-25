@@ -4,7 +4,7 @@ Operational documentation for running CipherScan locally and in production.
 
 **Architecture:** Frontend (Next.js on Vercel) → API (Express + WebSocket, Hetzner) → PostgreSQL ← cipherscan-rust indexer (Hetzner) → Zebra/Zakura node
 
-See also: [server infrastructure wiki](https://github.com/Kenbak/cipherscan) and `zcg/milestone-3/VERIFICATION.md` for M3 acceptance checks.
+See also: [upstream CipherScan](https://github.com/Kenbak/cipherscan) and `zcg/milestone-3/VERIFICATION.md` for M3 acceptance checks.
 
 ---
 
@@ -127,8 +127,8 @@ Its own `.env` with `ZEBRA_RPC_URL`, `DATABASE_URL`, gRPC settings, and `ZEBRA_S
 ### Frontend only (uses public API)
 
 ```bash
-git clone https://github.com/Kenbak/cipherscan.git
-cd cipherscan
+git clone https://github.com/QED-it/zipherscan.git
+cd zipherscan
 npm ci
 npm run dev
 # Open http://localhost:3000

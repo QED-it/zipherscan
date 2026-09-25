@@ -369,14 +369,6 @@
   --warning-box-text: #FBBF24;
   --warning-box-border: rgba(251, 191, 36, 0.25);
 
-  /* Decrypt inbox — glass surface matching .card-glass, not a standalone slate palette */
-  --inbox-container-bg: var(--card-glass-bg);
-  --inbox-panel: var(--card-glass-bg);
-  --inbox-chrome: var(--raised-bg);
-  --inbox-message-bg: var(--glass-4);
-  --inbox-message-header-bg: linear-gradient(90deg, var(--glass-4) 0%, var(--glass-2) 100%);
-  --inbox-message-body-bg: var(--glass-2);
-
   /* Privacy visuals */
   --risk-connector-color: rgba(167, 139, 250, 0.25);
   --reactflow-bg-opacity: 1;
@@ -524,14 +516,6 @@
   --sticky-header-bg: rgba(255, 255, 255, 0.95);
   --warning-box-text: #B45309;
   --warning-box-border: rgba(180, 83, 9, 0.25);
-
-  /* Decrypt inbox — same glass tokens as dark theme, values flip automatically */
-  --inbox-container-bg: var(--card-glass-bg);
-  --inbox-panel: var(--card-glass-bg);
-  --inbox-chrome: var(--raised-bg);
-  --inbox-message-bg: var(--glass-4);
-  --inbox-message-header-bg: linear-gradient(90deg, var(--glass-4) 0%, var(--glass-2) 100%);
-  --inbox-message-body-bg: var(--glass-2);
 
   /* Privacy visuals */
   --risk-connector-color: rgba(124, 58, 237, 0.4);
@@ -1328,37 +1312,6 @@
 
   .shielded-input-row {
     background: linear-gradient(90deg, rgb(var(--color-purple-rgb) / 0.04) 0%, rgb(var(--color-purple-rgb) / 0.06) 100%);
-  }
-
-  /* ===== INBOX (Decrypt results) ===== */
-  .inbox-container {
-    background: var(--inbox-container-bg);
-    backdrop-filter: var(--card-glass-blur);
-    -webkit-backdrop-filter: var(--card-glass-blur);
-  }
-
-  .inbox-header {
-    background-color: var(--inbox-chrome);
-  }
-
-  .inbox-body {
-    background-color: var(--inbox-panel);
-  }
-
-  .inbox-footer {
-    background-color: var(--inbox-chrome);
-  }
-
-  .inbox-message {
-    background-color: var(--inbox-message-bg);
-  }
-
-  .inbox-message-header {
-    background: var(--inbox-message-header-bg);
-  }
-
-  .inbox-message-body {
-    background-color: var(--inbox-message-body-bg);
   }
 
   /* ===== RISK CONNECTOR LINE ===== */

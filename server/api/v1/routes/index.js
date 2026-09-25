@@ -39,7 +39,6 @@ function toRouterPath(v1Path) {
 function resolveRateLimitOptions(rateLimitKey, config) {
   const table = {
     scanOrchard: config.scan.orchard.rateLimit,
-    scanLightwalletd: config.scan.lightwalletd.rateLimit,
   };
   const options = table[rateLimitKey];
   if (!options) {

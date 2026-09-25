@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 
 /**
@@ -11,12 +12,15 @@ const fs = require('fs');
  * (which points to the same code but shares the server's HTTP agent).
  */
 
-const zebraAgent = new http.Agent({
+const agentOptions = {
   keepAlive: true,
   maxSockets: 4,
   maxFreeSockets: 2,
   timeout: 10000,
-});
+};
+const zebraAgent = new http.Agent(agentOptions);
+// Used when ZEBRA_RPC_URL is https:// (e.g. a node behind a TLS tunnel).
+const zebraTlsAgent = new https.Agent(agentOptions);
 
 // Caps how much of a single RPC response we will buffer in memory. A
 // misbehaving/oversized response (e.g. a huge verbose block or mempool dump)
@@ -42,7 +46,7 @@ function getAuth() {
 }
 
 async function callZebraRPC(method, params = [], { timeout = 8000 } = {}) {
-  const rpcUrl = process.env.ZEBRA_RPC_URL || 'http://127.0.0.1:18232';
+  const rpcUrl = process.env.ZEBRA_RPC_URL || 'https://rpc.test-zsa.org';
   const auth = getAuth();
 
   const requestBody = JSON.stringify({
@@ -52,15 +56,16 @@ async function callZebraRPC(method, params = [], { timeout = 8000 } = {}) {
     params,
   });
   const url = new URL(rpcUrl);
+  const tls = url.protocol === 'https:';
 
   return new Promise((resolve, reject) => {
-    const req = http.request(
+    const req = (tls ? https : http).request(
       {
         hostname: url.hostname,
-        port: url.port,
+        port: url.port || undefined,
         path: url.pathname,
         method: 'POST',
-        agent: zebraAgent,
+        agent: tls ? zebraTlsAgent : zebraAgent,
         timeout,
         headers: {
           'Content-Type': 'application/json',

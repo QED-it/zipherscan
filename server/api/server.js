@@ -12,7 +12,6 @@ const rateLimit = require('express-rate-limit');
 const { Pool } = require('pg');
 const WebSocket = require('ws');
 const http = require('http');
-const redis = require('redis');
 const fs = require('fs');
 const { createListCache } = require('./list-cache');
 const { createRequestObservability } = require('./request-observability');
@@ -69,7 +68,6 @@ const sitemapsRouter = require('./routes/sitemaps');
 const transparentRouter = require('./routes/transparent');
 const valuationRouter = require('./routes/valuation');
 const pulseRouter = require('./routes/pulse');
-const signalsRouter = require('../signals/api');
 
 // Import privacy linkage functions
 const {
@@ -141,37 +139,22 @@ pool.query('SELECT NOW()', (err, res) => {
 // REDIS CLIENT
 // ============================================================================
 
-// Create Redis client
-const redisClient = redis.createClient({
-  socket: {
-    host: process.env.REDIS_HOST || '127.0.0.1',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-  },
-  // No password for local Redis
-});
-const listCache = createListCache({ redisClient });
+// No Redis in this deployment. Every call site below already guards on
+// `isOpen` and falls back — the list cache to in-process memory, the WebSocket
+// rate limiter to `checkWebSocketRateLimitFallback` (which fails closed), and
+// the broadcast to local clients only, since the Pub/Sub fan-out existed for
+// multi-instance deployments and there is one instance. A permanently-closed
+// stub keeps those paths without threading null checks through the file.
+const redisClient = {
+  isOpen: false,
+  isReady: false,
+  on() {},
+  duplicate() { return this; },
+};
+const listCache = createListCache({ redisClient: null });
+const redisPub = redisClient;
+const redisSub = redisClient;
 
-// Create Redis Pub/Sub clients (separate connections required)
-const redisPub = redisClient.duplicate();
-const redisSub = redisClient.duplicate();
-
-// Connect to Redis
-(async () => {
-  try {
-    await redisClient.connect();
-    await redisPub.connect();
-    await redisSub.connect();
-    console.log('✅ Redis connected');
-  } catch (err) {
-    logSafeError('❌ Redis connection failed:', err);
-    console.warn('⚠️  Continuing without Redis (fallback to in-memory cache)');
-  }
-})();
-
-// Handle Redis errors
-redisClient.on('error', (err) => logSafeError('Redis Client Error:', err));
-redisPub.on('error', (err) => logSafeError('Redis Pub Error:', err));
-redisSub.on('error', (err) => logSafeError('Redis Sub Error:', err));
 
 // Identifies this process's broadcasts on the shared Redis channel so its
 // own publishes are never re-delivered to its own WebSocket clients (see
@@ -269,14 +252,18 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 
+// CORS_ORIGINS (comma-separated) extends both the CORS and WebSocket allowlists.
+const EXTRA_ORIGINS = (process.env.CORS_ORIGINS || '').split(',').map((o) => o.trim()).filter(Boolean);
+
 // CORS configuration (only allow your domains)
 const allowedOrigins = [
+  'https://cipherscan.test-zsa.org',
   'https://testnet.cipherscan.app',
   'https://cipherscan.app',
   'https://crosslink.cipherscan.app',
   'http://localhost:3000',
   'http://localhost:3001',
-  ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
+  ...EXTRA_ORIGINS,
 ];
 
 app.use(cors({
@@ -324,12 +311,14 @@ const SERVICE_API_KEYS = (process.env.SERVICE_API_KEYS || '').split(',').filter(
 
 // Our own frontend domains — never rate-limit browsers visiting CipherScan
 const OWN_ORIGINS = [
+  'https://cipherscan.test-zsa.org',
   'https://cipherscan.app',
   'https://www.cipherscan.app',
   'https://testnet.cipherscan.app',
   'https://crosslink.cipherscan.app',
   'http://localhost:3000',
   'http://localhost:3001',
+  ...EXTRA_ORIGINS,
 ];
 
 // OWN_ORIGINS is used ONLY for the WebSocket upgrade check below — it is
@@ -452,8 +441,6 @@ app.use(transparentRouter);
 app.use(valuationRouter);
 app.use(pulseRouter);
 
-// Private trading signals: /api/signals/* (service-key protected)
-app.use('/api/signals', signalsRouter);
 
 // Stable public API contract. The router is fail-closed by default and returns
 // an indistinguishable 404 until API_V1_ENABLED is explicitly configured.

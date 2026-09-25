@@ -2,9 +2,9 @@ name: Docker
 
 on:
   push:
-    branches: [main, dev]
+    branches: [zsa1]
   pull_request:
-    branches: [main, dev]
+    branches: [zsa1]
   workflow_dispatch:
 
 concurrency:
@@ -30,7 +30,7 @@ jobs:
           chmod +x /usr/local/bin/hadolint
           hadolint --version
       - name: Lint Dockerfiles
-        run: hadolint --config .hadolint.yaml Dockerfile server/api/Dockerfile docker/zebra/Dockerfile
+        run: hadolint --config .hadolint.yaml Dockerfile server/api/Dockerfile
 
   # ---------------------------------------------------------------------------
   # Build the application images (web + api). No push.
@@ -75,15 +75,15 @@ jobs:
             -e POSTGRES_PASSWORD=smoke-test-only \
             -e POSTGRES_DB=zcash_explorer_testnet \
             postgres:16-alpine
-          for attempt in $(seq 1 20); do
+          for attempt in $(seq 1 30); do
             if docker exec cipherscan-postgres-smoke \
-              pg_isready -U zcash_user -d zcash_explorer_testnet >/dev/null; then
+              pg_isready -h 127.0.0.1 -U zcash_user -d zcash_explorer_testnet >/dev/null; then
               break
             fi
             sleep 1
           done
           docker exec cipherscan-postgres-smoke \
-            pg_isready -U zcash_user -d zcash_explorer_testnet
+            pg_isready -h 127.0.0.1 -U zcash_user -d zcash_explorer_testnet
           docker run --detach --name cipherscan-api-smoke \
             --network cipherscan-api-smoke \
             -p 3001:3001 \

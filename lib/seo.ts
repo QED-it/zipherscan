@@ -28,7 +28,7 @@ export function getBaseUrl(): string {
   const network = getNetwork();
   const urls: Record<SeoNetwork, string> = {
     mainnet: 'https://cipherscan.app',
-    testnet: 'https://testnet.cipherscan.app',
+    testnet: 'https://cipherscan.test-zsa.org',
     'crosslink-testnet': 'https://crosslink.cipherscan.app',
   };
   return urls[network];

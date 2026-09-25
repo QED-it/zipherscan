@@ -149,9 +149,7 @@ test('config: all three env templates agree on the companion tuning keys', () =>
   for (const file of files) {
     const contents = readRepoFile(file);
     assert.match(contents, /^API_LIST_CACHE_MAX_ENTRIES=\d+$/m, `${file} should set API_LIST_CACHE_MAX_ENTRIES`);
-    assert.match(contents, /^API_LIST_CACHE_REDIS_TIMEOUT_MS=\d+$/m, `${file} should set API_LIST_CACHE_REDIS_TIMEOUT_MS`);
   }
   const compose = readRepoFile('docker-compose.yml');
   assert.match(compose, /API_LIST_CACHE_MAX_ENTRIES:\s*\$\{API_LIST_CACHE_MAX_ENTRIES:-\d+\}/);
-  assert.match(compose, /API_LIST_CACHE_REDIS_TIMEOUT_MS:\s*\$\{API_LIST_CACHE_REDIS_TIMEOUT_MS:-\d+\}/);
 });
