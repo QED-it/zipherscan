@@ -58,14 +58,12 @@ characters of the cipherscan-rust commit it was built from — `zsa-0edc9619` is
 upstream's commit of 2026-08-15 — so the `SHA` above does not apply; take it
 from the cipherscan-rust checkout.
 
-cipherscan-rust ships no Dockerfile. The image is a two-stage build: a Rust
-stage runs `cargo build --release` in `/src`, and the runtime stage is
-`debian:bookworm-slim` with `ca-certificates` and `libssl3`, the binary at
-`/usr/local/bin/cipherscan-indexer`, `ENTRYPOINT ["cipherscan-indexer"]` and
-`CMD ["live"]`. That Dockerfile is not committed anywhere yet.
+cipherscan-rust ships no Dockerfile, so it lives here as `indexer.Dockerfile`.
+Run the build from the cipherscan-rust checkout, pointing `-f` at this repo:
 
 ```sh
-docker buildx build --platform linux/amd64 -f <indexer Dockerfile> . \
+cd cipherscan-rust
+docker buildx build --platform linux/amd64 -f ../zipherscan/indexer.Dockerfile . \
   -t $REG/dev-zipherscan-indexer:zsa-$(git rev-parse --short=8 HEAD) --push
 ```
 
