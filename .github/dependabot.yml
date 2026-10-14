@@ -87,6 +87,12 @@ updates:
     labels:
       - dependencies
       - docker
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      docker-images:
+        patterns: ["*"]
 
   # ----- Docker images in docker-compose.yml -----
   - package-ecosystem: docker-compose
@@ -97,3 +103,6 @@ updates:
     labels:
       - dependencies
       - docker
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
