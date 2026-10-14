@@ -1,0 +1,3 @@
+# Source for requirements-audit.txt (CI pip-audit). Regenerate with:
+#   pip-compile --generate-hashes --allow-unsafe --strip-extras --no-header -o requirements-audit.txt requirements-audit.in
+pip-audit
