@@ -12,7 +12,7 @@ See also: [upstream CipherScan](https://github.com/Kenbak/cipherscan) and `zcg/m
 
 | Component | Version / Notes |
 |-----------|----------------|
-| **Node.js** | 22.14.x (pinned in `.node-version`) |
+| **Node.js** | 22.23.x (pinned in `.node-version`) |
 | **npm** | 9+ |
 | **PostgreSQL** | 16+ with `zcash_explorer_mainnet` or `zcash_explorer_testnet` database |
 | **Redis** | 6+ (pub/sub for multi-worker WebSocket; API response caching) |
