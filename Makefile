@@ -45,7 +45,7 @@ install-decoder: ## Install zcash-decoder package dependencies
 
 .PHONY: install-jobs
 install-jobs: ## Install Python ML job dependencies
-	cd $(JOBS_DIR) && pip install -r requirements.txt
+	cd $(JOBS_DIR) && pip install --require-hashes -r requirements.txt
 
 # ---------------------------------------------------------------------------
 # Build

@@ -15,7 +15,7 @@ name: zipherscan
 services:
   # ----- PostgreSQL (explorer database) -----
   postgres:
-    image: ${POSTGRES_IMAGE:-postgres:16-bookworm}
+    image: ${POSTGRES_IMAGE:-postgres:16-bookworm@sha256:efedf3595f1d6f415c08568ba171029bf54052e754cc9f030e3f2412b21f3d67}
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -39,7 +39,7 @@ services:
   # Apply migrations after both a fresh snapshot restore and existing-volume
   # startup. The migration runner is idempotent and records applied versions.
   migrate:
-    image: ${POSTGRES_IMAGE:-postgres:16-bookworm}
+    image: ${POSTGRES_IMAGE:-postgres:16-bookworm@sha256:efedf3595f1d6f415c08568ba171029bf54052e754cc9f030e3f2412b21f3d67}
     depends_on:
       postgres:
         condition: service_healthy
@@ -66,7 +66,7 @@ services:
       context: .
       dockerfile: server/api/Dockerfile
       args:
-        NODE_IMAGE: ${NODE_IMAGE:-node:22.14.0-bookworm-slim}
+        NODE_IMAGE: ${NODE_IMAGE:-node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c}
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
     restart: unless-stopped
     depends_on:
@@ -101,7 +101,7 @@ services:
     build:
       context: .
       args:
-        NODE_IMAGE: ${NODE_IMAGE:-node:22.14.0-bookworm-slim}
+        NODE_IMAGE: ${NODE_IMAGE:-node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c}
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
         NEXT_PUBLIC_NETWORK: testnet
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
