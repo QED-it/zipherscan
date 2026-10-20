@@ -75,3 +75,34 @@ updates:
     labels:
       - dependencies
       - ci
+
+  # ----- Docker base images in the Dockerfiles -----
+  - package-ecosystem: docker
+    directories:
+      - "/"
+      - "/server/api"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      docker-images:
+        patterns: ["*"]
+
+  # ----- Docker images in docker-compose.yml -----
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

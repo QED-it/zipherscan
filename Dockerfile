@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
 
 # CipherScan Next.js frontend - multi-stage build producing a standalone server.
-# Base image is pinned by digest; override with --build-arg NODE_IMAGE=... to
-# build against a specific Node image / commit.
-ARG NODE_IMAGE=node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c
+# Base image is pinned by digest in the FROM line below, where Dependabot can
+# update it.
+FROM node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c AS base
 
 # ---------------------------------------------------------------------------
 # deps: install production-resolved node_modules from the lockfile
 # ---------------------------------------------------------------------------
-FROM ${NODE_IMAGE} AS deps
+FROM base AS deps
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
@@ -17,7 +17,7 @@ RUN npm ci --no-audit --no-fund
 # ---------------------------------------------------------------------------
 # builder: compile the Next.js standalone output
 # ---------------------------------------------------------------------------
-FROM ${NODE_IMAGE} AS builder
+FROM base AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 # Bake the source git commit into the image for traceability.
@@ -36,7 +36,7 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # runner: minimal runtime image
 # ---------------------------------------------------------------------------
-FROM ${NODE_IMAGE} AS runner
+FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
